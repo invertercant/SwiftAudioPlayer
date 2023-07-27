@@ -509,7 +509,7 @@ extension SAPlayer {
      - Parameter bitrate: The bitrate of the streamed audio. By default the bitrate is set to high for streaming saved audio files. If you want to stream radios then you should use the `low` bitrate option.
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
-    public func queueRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil) {
+    public func queueRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil, seek: Double = 0.0) {
         presenter.handleQueueStreamedAudio(withRemoteUrl: url, mediaInfo: mediaInfo, bitrate: bitrate)
     }
     

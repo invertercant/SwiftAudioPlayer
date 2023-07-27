@@ -102,16 +102,22 @@ class SAPlayerPresenter {
         delegate?.clearLockScreenInfo()
     }
     
-    func handlePlaySavedAudio(withSavedUrl url: URL) {
+    func handlePlaySavedAudio(withSavedUrl url: URL, seek: Double = 0.0) {
         resetCacheForNewAudio(url: url)
         delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioDownloaded(withSavedUrl: url)
+        if seek > 0{
+            delegate?.seekEngine(toNeedle: seek)
+        }
     }
     
-    func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate) {
+    func handlePlayStreamedAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate, seek: Double = 0.0) {
         resetCacheForNewAudio(url: url)
         delegate?.setLockScreenControls(presenter: self)
         delegate?.startAudioStreamed(withRemoteUrl: url, bitrate: bitrate)
+        if seek > 0{
+            delegate?.seekEngine(toNeedle: seek)
+        }
     }
     
     private func resetCacheForNewAudio(url: URL) {
@@ -122,12 +128,12 @@ class SAPlayerPresenter {
         AudioClockDirector.shared.resetCache()
     }
     
-    func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate) {
-        audioQueue.append(SAAudioQueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate))
+    func handleQueueStreamedAudio(withRemoteUrl url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate, seek: Double = 0.0) {
+        audioQueue.append(SAAudioQueueItem(loc: .remote, url: url, mediaInfo: mediaInfo, bitrate: bitrate, seek: seek))
     }
     
-    func handleQueueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?) {
-        audioQueue.append(SAAudioQueueItem(loc: .saved, url: url, mediaInfo: mediaInfo))
+    func handleQueueSavedAudio(withSavedUrl url: URL, mediaInfo: SALockScreenInfo?, seek: Double = 0.0) {
+        audioQueue.append(SAAudioQueueItem(loc: .saved, url: url, mediaInfo: mediaInfo, seek: seek))
     }
     
     func handleRemoveFirstQueuedItem() -> URL? {
@@ -232,10 +238,10 @@ extension SAPlayerPresenter {
         
         switch nextAudioURL.loc {
         case .remote:
-            handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate)
+            handlePlayStreamedAudio(withRemoteUrl: nextAudioURL.url, bitrate: nextAudioURL.bitrate, seek: nextAudioURL.seek)
             break
         case .saved:
-            handlePlaySavedAudio(withSavedUrl: nextAudioURL.url)
+            handlePlaySavedAudio(withSavedUrl: nextAudioURL.url, seek: nextAudioURL.seek)
             break
         }
         

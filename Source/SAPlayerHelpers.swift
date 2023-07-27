@@ -59,6 +59,7 @@ public struct SAAudioQueueItem {
     public var url: URL
     public var mediaInfo: SALockScreenInfo?
     public var bitrate: SAPlayerBitrate
+    public var seek: Double = 0.0
     
     /**
      Use to add audio to be queued for playback.
@@ -68,11 +69,12 @@ public struct SAAudioQueueItem {
      - Parameter mediaInfo: Relevant lockscreen media info for the queued audio.
      - Parameter bitrate: For streamed remote audio specifiy a bitrate if different from high. Use low bitrate for radio streams.
      */
-    public init(loc: Location, url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate = .high) {
+    public init(loc: Location, url: URL, mediaInfo: SALockScreenInfo?, bitrate: SAPlayerBitrate = .high, seek: Double = 0.0) {
         self.loc = loc
         self.url = url
         self.mediaInfo = mediaInfo
         self.bitrate = bitrate
+        self.seek = seek
     }
     
     /**
