@@ -510,7 +510,7 @@ extension SAPlayer {
      - Parameter mediaInfo: The media information of the audio to show on the lockscreen media player (optional).
      */
     public func queueRemoteAudio(withRemoteUrl url: URL, bitrate: SAPlayerBitrate = .high, mediaInfo: SALockScreenInfo? = nil, seek: Double = 0.0) {
-        presenter.handleQueueStreamedAudio(withRemoteUrl: url, mediaInfo: mediaInfo, bitrate: bitrate)
+        presenter.handleQueueStreamedAudio(withRemoteUrl: url, mediaInfo: mediaInfo, bitrate: bitrate, seek: seek)
     }
     
     /**
